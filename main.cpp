@@ -36,8 +36,8 @@ int main(int argc, char* argv[]) {
     auto normalizationDuration = duration_cast<microseconds>(normalizeStop - normalizeStart);
 
     // Print normalized data
-    cout << "Normalized Data:" << endl;
-    printData(data);
+    // cout << "Normalized Data:" << endl;
+    // printData(data);
 
     cout << "\n\nType the number of the algorithm you want to run.\n" 
          << "(1) Forward Selection\n"  
@@ -49,37 +49,37 @@ int main(int argc, char* argv[]) {
     cout<< "\n\n This dataset has " << data[0].features.size() << " features (not including class attribute), with " 
         << data.size() << " instances." << endl;
 
-    // //initialize selection class
-    // Selection selector(data[0].features.size(), data);
+    //initialize selection class
+    Selection selector(data[0].features.size(), data);
 
-    // // Get starting timepoint for computing accuracy
-    // auto accuracyStart = high_resolution_clock::now();
+    // Get starting timepoint for computing accuracy
+    auto accuracyStart = high_resolution_clock::now();
 
-    // //output chosen search
-    // switch(featureSelect) {
-    //     case 1:
-    //         selector.forwardSelection();
-    //         break;
-    //     case 2:
-    //         selector.backwardElimination();
-    //         break;
-    //     case 3:
-    //         //If we wanna add a special Algo for extra credit
-    //         break;
-    //     default:
-    //         selector.forwardSelection();
-    //         break;
-    // }
+    //output chosen search
+    switch(featureSelect) {
+        case 1:
+            selector.forwardSelection();
+            break;
+        case 2:
+            selector.backwardElimination();
+            break;
+        case 3:
+            //If we wanna add a special Algo for extra credit
+            break;
+        default:
+            selector.forwardSelection();
+            break;
+    }
 
-    // // Get ending timepoint for computing accuracy
-    // auto accuracyStop = high_resolution_clock::now();
+    // Get ending timepoint for computing accuracy
+    auto accuracyStop = high_resolution_clock::now();
 
-    // //get duration for computing accuracy
-    // auto accuracyDuration = duration_cast<microseconds>(accuracyStop - accuracyStart);
+    //get duration for computing accuracy
+    auto accuracyDuration = duration_cast<microseconds>(accuracyStop - accuracyStart);
 
-    // //output time for normalization and computing accuracy
-    // cout << "\nNormalization time       : " << normalizationDuration.count() << " microseconds" << endl;
-    // cout << "Accuracy Computation time: " << accuracyDuration.count() << " microseconds" << endl;
+    //output time for normalization and computing accuracy
+    cout << "\nNormalization time       : " << normalizationDuration.count() << " microseconds" << endl;
+    cout << "Accuracy Computation time: " << accuracyDuration.count() << " microseconds" << endl;
 
     return 0;
 }

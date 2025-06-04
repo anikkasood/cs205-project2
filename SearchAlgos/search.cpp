@@ -74,11 +74,14 @@ public:
 
     // Forward selection algorithm
     void forwardSelection() {
+        cout << fixed << setprecision(1); // for 1 decimal place
+
         set<int> cur_features;
         cout << "Forward Selection:" << endl;
-        cout << "Using no features and nearest neighbor evaluation, I get an accuracy of "
-             << eval(cur_features, this->data) << "%" << endl;
-        cout << "Beginning search.\n" << endl;
+        cout << "Running nearest neighbor with all 4 features, using “leaving-one-out” evaluation, I get an accuracy of "<< 
+            eval(cur_features, this->data) << "%" << endl;
+        
+            cout << "Beginning search.\n" << endl;
 
         for (int i = 1; i <= num_features; ++i) {
             double best_accuracy_for_round = 0.0;
@@ -122,7 +125,7 @@ public:
             } 
         }
 
-        cout << "Finished forward selection!! The best feature subset is {";
+        cout << "Finished search!! The best feature subset is {";
         for (auto it = best_subset.begin(); it != best_subset.end(); ++it) {
             cout << *it;
             if (next(it) != best_subset.end()) cout << ",";
@@ -133,6 +136,7 @@ public:
     //backward selection algorithm
     void backwardElimination() {
         set<int> cur_features;
+        cout << fixed << setprecision(1); // for 1 decimal place
 
         // make the set of all of the features
         for (int i = 1; i <= num_features; ++i) {
@@ -190,7 +194,7 @@ public:
         }
 
         // disp overall best
-        cout << "Finished backward elimination!! The best feature subset is {";
+        cout << "Finished search!! The best feature subset is {";
         for (auto it = best_subset.begin(); it != best_subset.end(); ++it) {
             cout << *it;
             if (next(it) != best_subset.end()) cout << ",";
