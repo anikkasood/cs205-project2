@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <set>
 #include <cstdlib>
 
@@ -73,8 +74,11 @@ public:
     }
 
     // Forward selection algorithm
-    void forwardSelection() {
+    void forwardSelection(ofstream & myfile) {
         cout << fixed << setprecision(1); // for 1 decimal place
+        
+
+
 
         set<int> cur_features;
         cout << "Forward Selection:" << endl;
@@ -92,14 +96,24 @@ public:
                 if (cur_features.find(feature) == cur_features.end()) {
                     set<int> test_features = cur_features;
                     test_features.insert(feature);
+                    
+                    string subset_str = "{";
 
                     double accuracy = eval(test_features, this->data);
                     cout << "Using feature(s) {";
                     for (auto it = test_features.begin(); it != test_features.end(); ++it) {
                         cout << *it;
-                        if (next(it) != test_features.end()) cout << ",";
+                        subset_str += to_string(*it);
+
+                        if (next(it) != test_features.end()) {
+                            cout << ",";
+                            subset_str += ","; // update str for output file
+                        }
                     }
+                    subset_str += "}";
+
                     cout << "} accuracy is " << accuracy << "%" << endl;
+                    myfile << subset_str << " " << accuracy << endl;
 
                     if (accuracy > best_accuracy_for_round) {
                         best_accuracy_for_round = accuracy;
@@ -110,13 +124,19 @@ public:
 
             if (best_feature != -1) {
                 cur_features.insert(best_feature);
+                
+              
+
                 cout << "Feature set {";
                 for (auto it = cur_features.begin(); it != cur_features.end(); ++it) {
                     cout << *it;
-                    if (next(it) != cur_features.end()) cout << ",";
+                    
+                    if (next(it) != cur_features.end()) {
+                        cout << ",";
+                    }
                 }
+               
                 cout << "} was best, accuracy is "  << best_accuracy_for_round << "%\n" << endl;
-
                 
                 if (best_accuracy_for_round > best_accuracy) {
                     best_accuracy = best_accuracy_for_round;
@@ -125,16 +145,21 @@ public:
             } 
         }
 
+        
         cout << "Finished search!! The best feature subset is {";
         for (auto it = best_subset.begin(); it != best_subset.end(); ++it) {
             cout << *it;
-            if (next(it) != best_subset.end()) cout << ",";
+            
+            if (next(it) != best_subset.end()) {
+                cout << ",";
+            }
         }
         cout << "}, which has an accuracy of "  << best_accuracy << "%" << endl;
+
     }
 
     //backward selection algorithm
-    void backwardElimination() {
+    void backwardElimination(string filename) {
         set<int> cur_features;
         cout << fixed << setprecision(1); // for 1 decimal place
 

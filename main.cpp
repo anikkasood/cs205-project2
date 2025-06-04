@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <fstream>
 #include <iomanip>
 // measure time
 #include <chrono>
@@ -58,16 +59,24 @@ int main(int argc, char* argv[]) {
     //output chosen search
     switch(featureSelect) {
         case 1:
-            selector.forwardSelection();
+        {
+            string output = filename.substr(0, filename.length() - 4) + "_forward.txt";
+            ofstream myfile(output);
+            
+            selector.forwardSelection(myfile);
+            
+            myfile.close();
+            
             break;
+        }
         case 2:
-            selector.backwardElimination();
+            selector.backwardElimination(filename);
             break;
         case 3:
             //If we wanna add a special Algo for extra credit
             break;
         default:
-            selector.forwardSelection();
+            
             break;
     }
 
