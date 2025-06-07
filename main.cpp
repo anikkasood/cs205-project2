@@ -55,23 +55,42 @@ int main(int argc, char* argv[]) {
 
     // Get starting timepoint for computing accuracy
     auto accuracyStart = high_resolution_clock::now();
+    ofstream fulloutputFile;
 
     //output chosen search
     switch(featureSelect) {
         case 1:
         {
             string output = filename.substr(0, filename.length() - 4) + "_forward.txt";
-            ofstream myfile(output);
+            string fulloutput = filename.substr(0, filename.length() - 4) + "_FULL_forward.txt";
             
-            selector.forwardSelection(myfile);
+            ofstream myfile(output);
+            fulloutputFile.open(fulloutput);
+           
+            selector.forwardSelection(myfile, fulloutputFile);
+            
+            myfile.close();
+            
+
+            
+            
+            break;
+        }
+        case 2:
+            {
+        
+            string output = filename.substr(0, filename.length() - 4) + "_backward.txt";
+            string fulloutput = filename.substr(0, filename.length() - 4) + "_FULL_backward.txt";
+            
+            ofstream myfile(output);
+            fulloutputFile.open(fulloutput);
+           
+            selector.backwardElimination(myfile, fulloutputFile);
             
             myfile.close();
             
             break;
         }
-        case 2:
-            selector.backwardElimination(filename);
-            break;
         case 3:
             //If we wanna add a special Algo for extra credit
             break;
@@ -89,6 +108,11 @@ int main(int argc, char* argv[]) {
     //output time for normalization and computing accuracy
     cout << "\nNormalization time       : " << normalizationDuration.count() << " microseconds" << endl;
     cout << "Accuracy Computation time: " << accuracyDuration.count() << " microseconds" << endl;
+    
+    fulloutputFile << "Normalization time       : " << normalizationDuration.count() << " microseconds" << endl;
+    fulloutputFile << "Accuracy Computation time: " << accuracyDuration.count() << " microseconds" << endl;
+    fulloutputFile.close();
 
+   
     return 0;
 }

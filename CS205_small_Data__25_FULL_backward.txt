@@ -1,0 +1,94 @@
+Backward Elimination:
+Using all features and 'random' evaluation, I get an accuracy of 71.6%
+Beginning search.
+Using feature(s) {2,3,4,5,6,7,8,9,10,11,12} 74.0%
+Using feature(s) {1,3,4,5,6,7,8,9,10,11,12} 73.8%
+Using feature(s) {1,2,4,5,6,7,8,9,10,11,12} 71.8%
+Using feature(s) {1,2,3,5,6,7,8,9,10,11,12} 74.4%
+Using feature(s) {1,2,3,4,6,7,8,9,10,11,12} 68.2%
+Using feature(s) {1,2,3,4,5,7,8,9,10,11,12} 72.8%
+Using feature(s) {1,2,3,4,5,6,8,9,10,11,12} 75.0%
+Using feature(s) {1,2,3,4,5,6,7,9,10,11,12} 71.8%
+Using feature(s) {1,2,3,4,5,6,7,8,10,11,12} 72.4%
+Using feature(s) {1,2,3,4,5,6,7,8,9,11,12} 73.8%
+Using feature(s) {1,2,3,4,5,6,7,8,9,10,12} 71.0%
+Using feature(s) {1,2,3,4,5,6,7,8,9,10,11} 70.6%
+Feature set {1,2,3,4,5,6,8,9,10,11,12} was best, accuracy is 75.0%
+Using feature(s) {2,3,4,5,6,8,9,10,11,12} 74.6%
+Using feature(s) {1,3,4,5,6,8,9,10,11,12} 76.2%
+Using feature(s) {1,2,4,5,6,8,9,10,11,12} 73.0%
+Using feature(s) {1,2,3,5,6,8,9,10,11,12} 74.8%
+Using feature(s) {1,2,3,4,6,8,9,10,11,12} 69.6%
+Using feature(s) {1,2,3,4,5,8,9,10,11,12} 74.8%
+Using feature(s) {1,2,3,4,5,6,9,10,11,12} 74.2%
+Using feature(s) {1,2,3,4,5,6,8,10,11,12} 74.0%
+Using feature(s) {1,2,3,4,5,6,8,9,11,12} 75.0%
+Using feature(s) {1,2,3,4,5,6,8,9,10,12} 71.8%
+Using feature(s) {1,2,3,4,5,6,8,9,10,11} 73.8%
+Feature set {1,3,4,5,6,8,9,10,11,12} was best, accuracy is 76.2%
+Using feature(s) {3,4,5,6,8,9,10,11,12} 78.0%
+Using feature(s) {1,4,5,6,8,9,10,11,12} 72.6%
+Using feature(s) {1,3,5,6,8,9,10,11,12} 77.0%
+Using feature(s) {1,3,4,6,8,9,10,11,12} 69.2%
+Using feature(s) {1,3,4,5,8,9,10,11,12} 75.0%
+Using feature(s) {1,3,4,5,6,9,10,11,12} 75.8%
+Using feature(s) {1,3,4,5,6,8,10,11,12} 76.4%
+Using feature(s) {1,3,4,5,6,8,9,11,12} 74.6%
+Using feature(s) {1,3,4,5,6,8,9,10,12} 75.6%
+Using feature(s) {1,3,4,5,6,8,9,10,11} 73.4%
+Feature set {3,4,5,6,8,9,10,11,12} was best, accuracy is 78.0%
+Using feature(s) {4,5,6,8,9,10,11,12} 76.6%
+Using feature(s) {3,5,6,8,9,10,11,12} 80.0%
+Using feature(s) {3,4,6,8,9,10,11,12} 70.8%
+Using feature(s) {3,4,5,8,9,10,11,12} 76.4%
+Using feature(s) {3,4,5,6,9,10,11,12} 79.4%
+Using feature(s) {3,4,5,6,8,10,11,12} 80.8%
+Using feature(s) {3,4,5,6,8,9,11,12} 79.2%
+Using feature(s) {3,4,5,6,8,9,10,12} 79.8%
+Using feature(s) {3,4,5,6,8,9,10,11} 77.2%
+Feature set {3,4,5,6,8,10,11,12} was best, accuracy is 80.8%
+Using feature(s) {4,5,6,8,10,11,12} 74.8%
+Using feature(s) {3,5,6,8,10,11,12} 80.8%
+Using feature(s) {3,4,6,8,10,11,12} 70.6%
+Using feature(s) {3,4,5,8,10,11,12} 80.6%
+Using feature(s) {3,4,5,6,10,11,12} 80.4%
+Using feature(s) {3,4,5,6,8,11,12} 80.2%
+Using feature(s) {3,4,5,6,8,10,12} 79.8%
+Using feature(s) {3,4,5,6,8,10,11} 80.8%
+Feature set {3,5,6,8,10,11,12} was best, accuracy is 80.8%
+Using feature(s) {5,6,8,10,11,12} 78.2%
+Using feature(s) {3,6,8,10,11,12} 73.6%
+Using feature(s) {3,5,8,10,11,12} 81.2%
+Using feature(s) {3,5,6,10,11,12} 82.0%
+Using feature(s) {3,5,6,8,11,12} 81.6%
+Using feature(s) {3,5,6,8,10,12} 80.8%
+Using feature(s) {3,5,6,8,10,11} 84.2%
+Feature set {3,5,6,8,10,11} was best, accuracy is 84.2%
+Using feature(s) {5,6,8,10,11} 79.0%
+Using feature(s) {3,6,8,10,11} 73.8%
+Using feature(s) {3,5,8,10,11} 81.4%
+Using feature(s) {3,5,6,10,11} 86.6%
+Using feature(s) {3,5,6,8,11} 82.2%
+Using feature(s) {3,5,6,8,10} 87.4%
+Feature set {3,5,6,8,10} was best, accuracy is 87.4%
+Using feature(s) {5,6,8,10} 79.4%
+Using feature(s) {3,6,8,10} 73.2%
+Using feature(s) {3,5,8,10} 88.2%
+Using feature(s) {3,5,6,10} 90.2%
+Using feature(s) {3,5,6,8} 89.4%
+Feature set {3,5,6,10} was best, accuracy is 90.2%
+Using feature(s) {5,6,10} 83.4%
+Using feature(s) {3,6,10} 75.8%
+Using feature(s) {3,5,10} 92.8%
+Using feature(s) {3,5,6} 92.0%
+Feature set {3,5,10} was best, accuracy is 92.8%
+Using feature(s) {5,10} 85.2%
+Using feature(s) {3,10} 74.8%
+Using feature(s) {3,5} 94.6%
+Feature set {3,5} was best, accuracy is 94.6%
+Using feature(s) {5} 83.0%
+Using feature(s) {3} 74.4%
+Feature set {5} was best, accuracy is 83.0%
+Finished search!! The best feature subset is {3,5}, which has an accuracy of 94.6%
+Normalization time       : 221 microseconds
+Accuracy Computation time: 17602184 microseconds

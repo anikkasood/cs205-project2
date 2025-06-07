@@ -2,8 +2,11 @@
 #include <fstream>
 #include <set>
 #include <cstdlib>
-
+#include <ostream>
 #include <ctime>
+#include <string>       
+#include <sstream>     
+
 #include <iomanip>
 
 #include "data.h"
@@ -73,8 +76,19 @@ public:
         return accuracy * 100;  // Return the accuracy as a percentage
     }
 
+    string format1Decimal(double value) {
+        ostringstream oss;
+        oss << fixed << setprecision(1) << value;
+        return oss.str();
+    }
+
+
+
     // Forward selection algorithm
-    void forwardSelection(ofstream & myfile) {
+    void forwardSelection(ofstream & myfile, ofstream & fulloutput) {
+
+        vector<string> file_output;
+
         cout << fixed << setprecision(1); // for 1 decimal place
         
 
@@ -82,10 +96,15 @@ public:
 
         set<int> cur_features;
         cout << "Forward Selection:" << endl;
+        file_output.push_back("Forward Selection:");
+
+        double accuracy = eval(cur_features, this->data);
         cout << "Running nearest neighbor with all 4 features, using “leaving-one-out” evaluation, I get an accuracy of "<< 
-            eval(cur_features, this->data) << "%" << endl;
-        
+            accuracy << "%" << endl;
+        file_output.push_back("Running nearest neighbor with all 4 features, using “leaving-one-out” evaluation, I get an accuracy of " + format1Decimal(accuracy) + "%");
             cout << "Beginning search.\n" << endl;
+
+        file_output.push_back("Beginning search.");
 
         for (int i = 1; i <= num_features; ++i) {
             double best_accuracy_for_round = 0.0;
@@ -114,6 +133,7 @@ public:
 
                     cout << "} accuracy is " << accuracy << "%" << endl;
                     myfile << subset_str << " " << accuracy << endl;
+                    file_output.push_back("Using feature(s)" + subset_str + " " + format1Decimal(accuracy));
 
                     if (accuracy > best_accuracy_for_round) {
                         best_accuracy_for_round = accuracy;
@@ -125,19 +145,22 @@ public:
             if (best_feature != -1) {
                 cur_features.insert(best_feature);
                 
-              
-
+              string toAddToFile = "Feature set {";
                 cout << "Feature set {";
                 for (auto it = cur_features.begin(); it != cur_features.end(); ++it) {
                     cout << *it;
-                    
+                    toAddToFile += to_string(*it); // update str for output file
+
                     if (next(it) != cur_features.end()) {
                         cout << ",";
+                        toAddToFile +=  ",";
                     }
                 }
                
                 cout << "} was best, accuracy is "  << best_accuracy_for_round << "%\n" << endl;
-                
+                toAddToFile += "} was best, accuracy is " + format1Decimal(best_accuracy_for_round) + "%";
+                file_output.push_back(toAddToFile);
+
                 if (best_accuracy_for_round > best_accuracy) {
                     best_accuracy = best_accuracy_for_round;
                     best_subset = cur_features;
@@ -145,85 +168,147 @@ public:
             } 
         }
 
-        
+        string toAddToFile = "Finished search!! The best feature subset is {";
         cout << "Finished search!! The best feature subset is {";
         for (auto it = best_subset.begin(); it != best_subset.end(); ++it) {
             cout << *it;
+            toAddToFile += to_string(*it); // update str for output file
             
             if (next(it) != best_subset.end()) {
                 cout << ",";
+                toAddToFile += ",";
             }
         }
         cout << "}, which has an accuracy of "  << best_accuracy << "%" << endl;
+        toAddToFile += "}, which has an accuracy of " + format1Decimal(best_accuracy) + "%";
+        file_output.push_back(toAddToFile);
+
+        int n = file_output.size();
+        
+        if (n <= 100) {
+            for (const string& line : file_output)
+                fulloutput << line << '\n';
+        } else {
+            for (int i = 0; i < 50; ++i)
+                fulloutput << file_output[i] << '\n';
+
+            fulloutput << "...\n... [omitted " << (n - 100) << " lines] ...\n...\n";
+
+            for (int i = n - 50; i < n; ++i)
+                fulloutput << file_output[i] << '\n';
+        }
 
     }
+//backward selection algorithm
+void backwardElimination(ofstream & myfile, ofstream & fulloutput) {
+    vector<string> file_output;
+    set<int> cur_features;
+    cout << fixed << setprecision(1); // for 1 decimal place
 
-    //backward selection algorithm
-    void backwardElimination(string filename) {
-        set<int> cur_features;
-        cout << fixed << setprecision(1); // for 1 decimal place
-
-        // make the set of all of the features
-        for (int i = 1; i <= num_features; ++i) {
-            cur_features.insert(i);
+    string initial_subset = "{";
+    for (int i = 1; i <= num_features; ++i) {
+        cur_features.insert(i);
+        initial_subset += to_string(i);
+        if (i < num_features) {
+            initial_subset += ",";
         }
-
-        cout << "Backward Elimination:" << endl;
-        cout << "Using all features and 'random' evaluation, I get an accuracy of "
-             << eval(cur_features, this->data) << "%" << endl;
-        cout << "Beginning search.\n" << endl;
-
-        // set all features as the best accuracy for now
-        best_accuracy = eval(cur_features, this->data);
-        best_subset = cur_features; // to track the subset for the best feature 
-
-        while (cur_features.size() > 1) {
-            double best_accuracy_for_round = 0.0;
-            int feature_to_remove = -1;
-
-            for (int feature : cur_features) {
-                set<int> test_features = cur_features; // store all of the features within a set
-                test_features.erase(feature); // remove the curr one
-
-                double accuracy = eval(test_features, this->data); // get the accuracy of everything BUT the feature just eliminated
-                cout << "Using feature(s) {";
-                for (auto it = test_features.begin(); it != test_features.end(); ++it) {
-                    cout << *it;
-                    if (next(it) != test_features.end()) cout << ",";
-                }
-                cout << "} accuracy is " << accuracy << "%" << endl;
-
-                 // if its the best we have so far for this level make this elimination + update
-                if (accuracy > best_accuracy_for_round) {
-                    best_accuracy_for_round = accuracy;
-                    feature_to_remove = feature;
-                }
-            }
-            
-            // display the best for that round
-            if (feature_to_remove != -1) {
-                cur_features.erase(feature_to_remove);
-                cout << "Feature set {";
-                for (auto it = cur_features.begin(); it != cur_features.end(); ++it) {
-                    cout << *it;
-                    if (next(it) != cur_features.end()) cout << ",";
-                }
-                cout << "} was best, accuracy is " << best_accuracy_for_round << "%\n" << endl;
-
-                // if its better than the overall best, update the overall best
-                if (best_accuracy_for_round > best_accuracy) { 
-                    best_accuracy = best_accuracy_for_round;
-                    best_subset = cur_features;
-                }
-            }
-        }
-
-        // disp overall best
-        cout << "Finished search!! The best feature subset is {";
-        for (auto it = best_subset.begin(); it != best_subset.end(); ++it) {
-            cout << *it;
-            if (next(it) != best_subset.end()) cout << ",";
-        }
-        cout << "}, which has an accuracy of " << best_accuracy << "%" << endl;
     }
+    initial_subset += "}";
+
+    myfile << initial_subset << " ";
+    double init = eval(cur_features, this->data);
+
+    cout << "Backward Elimination:" << endl;
+    file_output.push_back("Backward Elimination:");
+
+    cout << "Using all features and 'random' evaluation, I get an accuracy of " << init << "%" << endl;
+    file_output.push_back("Using all features and 'random' evaluation, I get an accuracy of " + format1Decimal(init) + "%");
+
+    myfile << init << endl;
+    cout << "Beginning search.\n" << endl;
+    file_output.push_back("Beginning search.");
+
+    best_accuracy = eval(cur_features, this->data);
+    best_subset = cur_features;
+
+    while (cur_features.size() > 1) {
+        double best_accuracy_for_round = 0.0;
+        int feature_to_remove = -1;
+
+        for (int feature : cur_features) {
+            set<int> test_features = cur_features;
+            test_features.erase(feature);
+
+            string subset_str = "{";
+            double accuracy = eval(test_features, this->data);
+            cout << "Using feature(s) {";
+            for (auto it = test_features.begin(); it != test_features.end(); ++it) {
+                cout << *it;
+                subset_str += to_string(*it);
+                if (next(it) != test_features.end()) {
+                    cout << ",";
+                    subset_str += ",";
+                }
+            }
+            subset_str += "}";
+            cout << "} accuracy is " << accuracy << "%" << endl;
+            myfile << subset_str << " " << accuracy << endl;
+            file_output.push_back("Using feature(s) " + subset_str + " " + format1Decimal(accuracy) + "%");
+
+            if (accuracy > best_accuracy_for_round) {
+                best_accuracy_for_round = accuracy;
+                feature_to_remove = feature;
+            }
+        }
+
+        if (feature_to_remove != -1) {
+            cur_features.erase(feature_to_remove);
+            string toAddToFile = "Feature set {";
+            cout << "Feature set {";
+            for (auto it = cur_features.begin(); it != cur_features.end(); ++it) {
+                cout << *it;
+                toAddToFile += to_string(*it);
+                if (next(it) != cur_features.end()) {
+                    cout << ",";
+                    toAddToFile += ",";
+                }
+            }
+            cout << "} was best, accuracy is " << best_accuracy_for_round << "%\n" << endl;
+            toAddToFile += "} was best, accuracy is " + format1Decimal(best_accuracy_for_round) + "%";
+            file_output.push_back(toAddToFile);
+
+            if (best_accuracy_for_round > best_accuracy) {
+                best_accuracy = best_accuracy_for_round;
+                best_subset = cur_features;
+            }
+        }
+    }
+
+    string toAddToFile = "Finished search!! The best feature subset is {";
+    cout << "Finished search!! The best feature subset is {";
+    for (auto it = best_subset.begin(); it != best_subset.end(); ++it) {
+        cout << *it;
+        toAddToFile += to_string(*it);
+        if (next(it) != best_subset.end()) {
+            cout << ",";
+            toAddToFile += ",";
+        }
+    }
+    cout << "}, which has an accuracy of " << best_accuracy << "%" << endl;
+    toAddToFile += "}, which has an accuracy of " + format1Decimal(best_accuracy) + "%";
+    file_output.push_back(toAddToFile);
+
+    int n = file_output.size();
+    if (n <= 100) {
+        for (const string& line : file_output)
+            fulloutput << line << '\n';
+    } else {
+        for (int i = 0; i < 50; ++i)
+            fulloutput << file_output[i] << '\n';
+        fulloutput << "...\n... [omitted " << (n - 100) << " lines] ...\n...\n";
+        for (int i = n - 50; i < n; ++i)
+            fulloutput << file_output[i] << '\n';
+    }
+}
+
 };
