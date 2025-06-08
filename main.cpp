@@ -91,9 +91,6 @@ int main(int argc, char* argv[]) {
             
             break;
         }
-        case 3:
-            //If we wanna add a special Algo for extra credit
-            break;
         default:
             
             break;
