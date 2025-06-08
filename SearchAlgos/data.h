@@ -12,6 +12,8 @@ struct DataRow {
 
 // Function declarations
 std::vector<DataRow> loadData(const std::string& filename);
+std::vector<DataRow> loadBCData(const std::string& filename);
+
 void normalizeData(std::vector<DataRow>& data);
 
 void zNormalizeData(std::vector<DataRow>& data);

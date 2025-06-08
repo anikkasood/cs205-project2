@@ -21,8 +21,14 @@ int main(int argc, char* argv[]) {
     cout<< "Type in the name of the file to test : "<<endl; 
     cin>> filename;
 
+    vector<DataRow> data;
+
     // Load data from file
-    vector<DataRow> data = loadData(filename);
+    if (filename == "breast_cancer_wisconsin.txt") {
+    data = loadBCData(filename);
+    } else {
+        data = loadData(filename);
+    }
 
     // Get starting timepoint for normalizing data
     auto normalizeStart = high_resolution_clock::now();
@@ -40,6 +46,14 @@ int main(int argc, char* argv[]) {
     // cout << "Normalized Data:" << endl;
     // printData(data);
 
+    for (const auto& row : data) {
+        cout << "Label: " << row.label << ", Features: ";
+        for (double f : row.features) {
+            cout << f << " ";
+        }
+        cout << endl;
+    }
+    
     cout << "\n\nType the number of the algorithm you want to run.\n" 
          << "(1) Forward Selection\n"  
          << "(2) Backward Elimination\n";

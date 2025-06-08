@@ -7,26 +7,69 @@
 
 #include <limits>
 #include <algorithm>
-
+using namespace std;
 #include <cmath>
 
-// Load data from a file
-std::vector<DataRow> loadData(const std::string& filename) {
-
-    std::ifstream file(filename);
-
-
-    std::vector<DataRow> data;
-
+vector<DataRow> loadBCData(const string& filename) {
+    ifstream file(filename);
+    vector<DataRow> data;
 
     if (!file.is_open()) {
-        std::cerr << "Error opening file: " << filename << std::endl;
+        cerr << "Error opening file: " << filename << endl;
         exit(1);
     }
 
-    std::string line;
-    while (std::getline(file, line)) {
-        std::stringstream ss(line);
+    string line;
+
+    // Skip the header
+    if (getline(file, line)) {
+        // Do nothing (skip header row)
+    }
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string token;
+        DataRow row;
+
+        // remove id
+        ss >> token;
+
+        // replace m with 1 and b with 0
+        ss >> token;
+        row.label = (token == "M") ? 1 : 0;
+
+        // read the rest of the features
+        while (ss >> token) {
+            try {
+                double value = stod(token);
+                row.features.push_back(value);
+            } catch (...) {
+
+            }
+        }
+
+        data.push_back(row);
+    }
+
+    file.close();
+    return data;
+}
+
+// Load data from a file
+vector<DataRow> loadData(const std::string& filename) {
+
+    ifstream file(filename);
+    vector<DataRow> data;
+
+
+    if (!file.is_open()) {
+        cerr << "Error opening file: " << filename << std::endl;
+        exit(1);
+    }
+    
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
         DataRow row;
         double value;
 
