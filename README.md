@@ -5,6 +5,12 @@
 **Author**: Anika Sood  
 **Repository**: [cs205-project2](https://github.com/anikkasood/cs205-project2)
 
+## Notes
+
+- Forward Selection was in general faster and more accurate across all datasets tested
+- Full report is uploaded as PDF to this repository
+
+
 ## Overview
 
 This project implements Forward Selection and Backward Elimination using a Nearest Neighbor classifier on three datasets. The goal is to evaluate how these feature selection methods impact accuracy and computational time.
@@ -55,7 +61,7 @@ Data is stored using a `DataRow` struct that holds a label and a vector of featu
 
 ## Why Early Features Matter
 
-In Forward Selection, the first feature selected is the one with the highest individual accuracy. Features added later are evaluated in combination with it. This makes early features very influential in the final result.
+In Forward Selection, the first feature selected is the one with the highest individual accuracy. Following features that are selected are in combination with it. Therefore, the intial selection has a great impact on overall accuracy. 
 
 ## Hardware
 
@@ -71,8 +77,3 @@ In Forward Selection, the first feature selected is the one with the highest ind
 | Large Dataset             | 50 / 1000            | 23.3 min          | 30.0 min             |
 | Breast Cancer Wisconsin   | 30 / 569             | 2.5 min           | 3.0 min              |
 
-## Notes
-
-- Forward Selection was generally faster and more accurate across all datasets.
-- Backward Elimination became more expensive as the number of features increased.
-- Traces for all runs are included at the bottom of the report for reference.
